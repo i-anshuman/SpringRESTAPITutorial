@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.UsersDTO;
 import com.app.pojos.JWTRequest;
 import com.app.pojos.JWTResponse;
 import com.app.service.JWTUserDetailService;
@@ -38,17 +39,27 @@ public class AuthenticateController {
   
   @PostMapping("/authenticate")
   public ResponseEntity<?> createAuthToken(@RequestBody JWTRequest authRequest) throws Exception {
+    System.out.println("In createAuthToken.");
     authenticate(authRequest.getUsername(), authRequest.getPassword());
     
     final UserDetails user = userDetailsService.loadUserByUsername(authRequest.getUsername());
     
+    System.out.println("User : " + user);
+    
     final String token = jwtUtil.generateToken(user);
-
+    System.out.println("Token before sending : " + token);
     return ResponseEntity.ok(new JWTResponse(token));
+  }
+  
+  @PostMapping("/register")
+  public ResponseEntity<?> saveNewUser(@RequestBody UsersDTO user) throws Exception {
+    System.out.println("In Register : " + user);
+    return ResponseEntity.ok(userDetailsService.save(user));
   }
   
   private void authenticate(String username, String password) throws Exception {
     try {
+      System.out.println("In authenticate : " + username + ", " + password);
       authManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     } catch (DisabledException e) {
       throw new Exception("USER_DISABLED", e);
