@@ -55,6 +55,6 @@ public class Users {
 
   @Override
   public String toString() {
-    return "Users [id=" + id + ", username=" + username + ", password=[PROTECTED]]";
+    return "Users [id=" + id + ", username=" + username + ", password=" + password + "]";
   }
 }

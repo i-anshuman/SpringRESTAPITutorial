@@ -43,6 +43,7 @@ public class JWTUtils {
 
   public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
     final Claims claims = getAllClaimsFromToken(token);
+    System.out.println("Claims : " + claims);
     return claimsResolver.apply(claims);
   }
   
